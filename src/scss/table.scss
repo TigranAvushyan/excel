@@ -10,6 +10,7 @@
   padding-bottom: 2px;
 
   .row {
+    user-select: none;
     display: flex;
     flex-direction: row;
     min-height: 20px;
@@ -34,6 +35,7 @@
 
   .column {
     position: relative;
+    user-select: none;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,9 +74,10 @@
     bottom: 0;
     background: $primary-color;
     opacity: 0;
+    z-index: 1000;
 
     &:hover {
-      opacity: 1;
+      opacity: 1!important;
     }
 
   }
@@ -96,4 +99,5 @@
       cursor: col-resize;
     }
   }
+
 }
