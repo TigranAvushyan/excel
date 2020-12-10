@@ -1,27 +1,30 @@
-const CODES = {
-    A: 65,
-    Z: 90,
-}
 
-function toCell(col) {
-    return `
-    <div class="cell" contenteditable data-letter="${col}"></div>
-  `
+function toCell(row, col) {
+  return `
+            <input 
+            class="cell" 
+            data-col="${col}"
+            data-row="${row}"
+            data-id="${col}${row}"
+            data-type="cell"
+            >
+        `
 }
 
 function toColumn(col) {
-    return `
-    <div class="column" data-type="resizable" data-letter="${col}">
+  return `
+    <div class="column" data-type="resizable" data-col="${col}">
         ${col}
         <div class="col-resize" data-resize="col"></div>
     </div>
   `
 }
 
+
 function createRow(index, content) {
-    const resize = index ? `<div class="row-resize" 
+  const resize = index ? `<div class="row-resize" 
         data-resize="row"></div>` : ''
-    return `
+  return `
     <div class="row" data-type="resizable">
       <div class="row-info">
         ${index ? index : ''}
@@ -31,31 +34,21 @@ function createRow(index, content) {
     </div>
   `
 }
+export function createTable(rowsCount, colsCount) {
+  const rows = []
+  const letters = colsCount
+  const cols = []
 
-function toChar(_, index) {
-    return String.fromCharCode(CODES.A + index)
-}
-
-export function createTable(rowsCount = 15) {
-    const rows = []
-    const colsCount = CODES.Z - CODES.A + 1
-    const cols = new Array(colsCount)
-        .fill('')
-        .map(toChar)
-        .map(toColumn)
-        .join('')
-
-    rows.push(createRow(null, cols))
-
-    for (let i = 1; i <= rowsCount; i++) {
-        const cells = new Array(colsCount)
-            .fill('')
-            .map(toChar)
-            .map(toCell)
-            .join('')
-
-        rows.push(createRow(i, cells))
+  for (let row = 1; row <= rowsCount; row++) {
+    const cells = []
+    for (const col of letters) {
+      if (row === 1)
+        cols.push(toColumn(col))
+      cells.push(toCell(row, col))
     }
+    rows.push(createRow(row, cells.join('')))
+  }
+  rows.unshift(createRow(null, cols.join('')))
 
-    return rows.join('')
+  return rows.join('')
 }

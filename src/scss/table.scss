@@ -61,10 +61,17 @@
     outline: none;
 
 
+    &.group {
+      background-color: #aebfef;
+    }
     &.selected {
       border: none;
-      outline: 2px solid $primary-color;
+      outline: 1px solid $primary-color;
       z-index: 2;
+      &.group {
+        background-color: #fff;
+        outline: 1px solid $primary-color;
+      }
     }
   }
 
