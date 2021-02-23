@@ -31,3 +31,13 @@ export function letterGenerator(
 function toChar(_, index) {
   return String.fromCharCode(65 + index)
 }
+
+export function storage(key, data) {
+  if (!data) {
+    return JSON.parse(localStorage.getItem(key))
+  } localStorage.setItem(key, JSON.stringify(data))
+}
+
+export function isEqual(a, b) {
+  return JSON.stringify(a) === JSON.stringify(b)
+}

@@ -11,7 +11,10 @@
     "require-jsdoc": "off",
     "operator-linebreak": "off",
     "no-debugger": "off",
-    "curly": "off"
+    "curly": "off",
+    "valid-jsdoc": "off",
+    "one-var": "off",
+    "no-case-declarations": "off"
   },
   "extends": ["eslint:recommended", "google"]
 }

@@ -14,11 +14,14 @@ class Dom {
   }
 
   text(text) {
-    this.$el.textContent = text
+    if (typeof text === 'string') {
+      this.$el.textContent = text
+      return this
+    } else return this.$el.textContent
   }
 
   val(text) {
-    if (text) {
+    if (typeof text === 'string') {
       this.$el.value = text
       return this
     } else return this.$el.value

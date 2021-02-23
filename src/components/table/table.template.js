@@ -1,5 +1,17 @@
+function getWidth(state, col) {
+  const c = state.tableResize.col[col]
+  if (c) return `style="width: ${c}px"`
+}
 
-function toCell(row, col) {
+function getHeight(state, row) {
+  const r = state.tableResize.row[row]
+  if (r) return `style="height: ${r}px"`
+}
+
+function toCell(row, col, state) {
+  const value = Object.keys(state.cellData).indexOf(col+row) > -1 ?
+    state.cellData[col+row].value :
+    ''
   return `
             <input 
             class="cell" 
@@ -7,13 +19,20 @@ function toCell(row, col) {
             data-row="${row}"
             data-id="${col}${row}"
             data-type="cell"
+            ${getWidth(state, col)}
+            value="${value}"
             >
         `
 }
 
-function toColumn(col) {
+
+function toColumn(col, state) {
   return `
-    <div class="column" data-type="resizable" data-col="${col}">
+    <div class="column" 
+      data-type="resizable" 
+      data-col="${col}"
+      ${getWidth(state, col)}
+    >
         ${col}
         <div class="col-resize" data-resize="col"></div>
     </div>
@@ -21,20 +40,26 @@ function toColumn(col) {
 }
 
 
-function createRow(index, content) {
+function toRow(index, content, state) {
   const resize = index ? `<div class="row-resize" 
         data-resize="row"></div>` : ''
+  const id = index ? index : ''
   return `
-    <div class="row" data-type="resizable">
+    <div class="row" 
+      data-type="resizable" 
+      data-row="${id}"
+      ${getHeight(state, index)}
+    >
       <div class="row-info">
-        ${index ? index : ''}
+        ${id}
         ${resize}
       </div>
       <div class="row-data">${content}</div>
     </div>
   `
 }
-export function createTable(rowsCount, colsCount) {
+
+export function createTable(rowsCount, colsCount, state) {
   const rows = []
   const letters = colsCount
   const cols = []
@@ -42,13 +67,14 @@ export function createTable(rowsCount, colsCount) {
   for (let row = 1; row <= rowsCount; row++) {
     const cells = []
     for (const col of letters) {
-      if (row === 1)
-        cols.push(toColumn(col))
-      cells.push(toCell(row, col))
+      if (row === 1) {
+        cols.push(toColumn(col, state))
+      }
+      cells.push(toCell(row, col, state))
     }
-    rows.push(createRow(row, cells.join('')))
+    rows.push(toRow(row, cells.join(''), state))
   }
-  rows.unshift(createRow(null, cols.join('')))
+  rows.unshift(toRow(null, cols.join(''), state))
 
   return rows.join('')
 }
