@@ -13,6 +13,10 @@ class Dom {
     return this.$el.outerHTML.trim()
   }
 
+  parent() {
+    return $(this.$el.parentElement)
+  }
+
   text(text) {
     if (typeof text === 'string') {
       this.$el.textContent = text
@@ -105,7 +109,7 @@ class Dom {
   }
 }
 
-// event.target
+
 export function $(selector) {
   return new Dom(selector)
 }

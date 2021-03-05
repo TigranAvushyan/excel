@@ -1,3 +1,5 @@
+import {hasKey, toSentence} from '@core/utils';
+
 function getWidth(state, col) {
   const c = state.tableResize.col[col]
   if (c) return `style="width: ${c}px"`
@@ -9,18 +11,24 @@ function getHeight(state, row) {
 }
 
 function toCell(row, col, state) {
-  const value = Object.keys(state.cellData).indexOf(col+row) > -1 ?
-    state.cellData[col+row].value :
-    ''
+  const cellData = hasKey(state.cellData, col+row) || ''
+  let toolBarStyle = ''
+  const align = `text-align: ${cellData.align || 'left'}; `
+  const bold = `font-weight: ${cellData.bold ? 'bold' : 'normals'};`
+  const italic = `font-style: ${cellData.italic ? 'italic' : ''};`
+  const underline = `text-decoration: 
+    ${cellData.underlined ? 'underline' : 'none'};`
+  toolBarStyle = toSentence(align, bold, italic, underline)
   return `
             <input 
-            class="cell" 
-            data-col="${col}"
-            data-row="${row}"
-            data-id="${col}${row}"
-            data-type="cell"
-            ${getWidth(state, col)}
-            value="${value}"
+              class="cell" 
+              data-col="${col}"
+              data-row="${row}"
+              data-id="${col}${row}"
+              data-type="cell"
+              ${getWidth(state, col)}
+              value="${cellData.value || ''}"
+              style="${toolBarStyle}"
             >
         `
 }

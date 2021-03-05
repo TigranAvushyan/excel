@@ -41,3 +41,24 @@ export function storage(key, data) {
 export function isEqual(a, b) {
   return JSON.stringify(a) === JSON.stringify(b)
 }
+
+
+/**
+ * @param name
+ * @param key
+ * @param f
+ * @returns if has key => object; else f
+ */
+export function hasKey(key, name, f = false) {
+  if (Object.keys(key).indexOf(name) > -1) {
+    return key[name]
+  } return f
+}
+
+export function toSentence(...words) {
+  return words.reduce((a, c) => a + c )
+}
+
+export function toggle(a) {
+  return !a
+}

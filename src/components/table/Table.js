@@ -24,19 +24,24 @@ export class Table extends ExcelComponent {
     this.maxRow = 5
     this.maxCol = 5
     this.cols = letterGenerator(this.maxCol)
-    // console.log(this.$dispatch)
-    // eslint-disable-next-line max-len
-    // this.selection = new TableSelection(this.cols, this.$root, this.changeSelectedId)
     this.selection = new TableSelection(this)
   }
 
   init() {
     super.init()
     this.selection.select(this.$state().selectedId || 'A1')
+    this.$on('formulaInput', text => {
+      this.selection.current.val(text)
+      this.changeCellDataText(this.selection.current.data.id, text)
+    })
+    this.$on('change-cell-style', data => {
+      this.selection.current.css(data)
+    })
   }
 
   onInput(event) {
-    this.changeTextState($(event.target))
+    const target = $(event.target)
+    this.changeCellDataText(target.data.id, target.val())
   }
 
   resizeTable($target) {
@@ -45,17 +50,18 @@ export class Table extends ExcelComponent {
     })
   }
 
-  changeTextState($target) {
+
+  changeCellDataText(id, text) {
     this.$dispatch({
-      type: 'CHANGE_TEXT',
+      type: 'CELL_DATA',
+      id,
       data: {
-        [$target.data.id]: {
-          value: $target.val(),
-          formula: $target.val(),
-        },
+        value: text,
+        formula: text,
       },
     })
   }
+
   changeSelectedId(id) {
     this.$dispatch({
       type: 'SELECT',
@@ -69,7 +75,6 @@ export class Table extends ExcelComponent {
       this.resizeTable($target)
     } else if ($target.data.type === 'cell') {
       this.selection.selectOnMouseDown($target)
-      // this.changeSelectedId($target.data.id)
     }
   }
 
@@ -78,6 +83,5 @@ export class Table extends ExcelComponent {
     const $target = $(event.target)
     this.selection.selectOnKeyDown(
         event, $target, this.maxCol, this.maxRow, this.cols)
-    // this.changeSelectedId($target.data.id)
   }
 }

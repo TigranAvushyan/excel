@@ -6,12 +6,9 @@ const defaultState = {
     col: {},
     row: {},
   },
-  selectedId: '',
+  selectedId: 'A1',
   cellData: {
-    A1: {
-      value: '',
-      formula: '',
-    },
+
   },
 }
 
