@@ -1,12 +1,14 @@
 import {$} from '@core/dom';
 
 export class TableSelection {
-  constructor(cols, $root) {
+  // constructor(cols, $root, s) {
+  constructor(ctx) {
+    this.ctx = ctx
     this.selectGroupArr = []
-    this.cols = cols.map((el, i) => {
+    this.cols = ctx.cols.map((el, i) => {
       return [el, i]
     })
-    this.$root = $root
+    this.$root = ctx.$root
     this.colsOb = Object.fromEntries(this.cols)
   }
 
@@ -118,5 +120,6 @@ export class TableSelection {
       }
     })
     this.selectGroupArr[0].focus().addClass('selected')
+    this.ctx.changeSelectedId(this.selectGroupArr[0].data.id)
   }
 }

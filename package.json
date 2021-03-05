@@ -29,9 +29,10 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node src/test.js",
     "start": "cross-env NODE_ENV=development webpack-dev-server",
-    "build": "cross-env NODE_ENV=pruduction webpack --mode pruduction"
+    "build": "cross-env NODE_ENV=pruduction webpack --mode pruduction",
+    "lint": "eslint --fix --ext .js,.jsx ."
   },
   "repository": {
     "type": "git",

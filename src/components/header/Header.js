@@ -1,4 +1,5 @@
 import {ExcelComponent} from '@core/ExcelComponent'
+import {$} from '@core/dom';
 
 export class Header extends ExcelComponent {
   static className = 'excel__header'
@@ -6,13 +7,25 @@ export class Header extends ExcelComponent {
   constructor($root, options) {
     super($root, {
       name: 'Header',
+      listeners: ['input'],
       ...options,
     });
   }
 
+  onInput(e) {
+    this.$dispatch({
+      type: 'TABLE_NAME',
+      data: {
+        value: $(e.target).val(),
+      },
+    })
+  }
+
+
   toHTML() {
+    const val = this.$state().tableName
     return `
-      <input type="text" class="input" value="Новая таблица" />
+      <input type="text" class="input" value="${val}" />
 
       <div>
 
