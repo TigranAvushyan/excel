@@ -1,6 +1,8 @@
 export function rootReducer(state, action) {
   const prevState = state
   switch (action.type) {
+    case 'DATE':
+      return {...state, lastDate: action.data}
     case 'TABLE_NAME':
       return {...state, tableName: action.data.value}
     case 'TABLE_RESIZE':

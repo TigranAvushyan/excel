@@ -1,4 +1,5 @@
 import {ExcelComponent} from '@core/ExcelComponent'
+import {hasKey} from '@core/utils';
 
 export class Formula extends ExcelComponent {
   static className = 'excel__formula'
@@ -19,9 +20,12 @@ export class Formula extends ExcelComponent {
   }
 
   toHTML() {
+    const val = hasKey(this.$state().cellData, this.$state().selectedId)
     return `
       <div class="info">fx</div>
-      <div class="input" contenteditable spellcheck="false"></div>
+      <div class="input" contenteditable spellcheck="false">
+        ${val ? val.formula : ''}
+      </div>
     `
   }
 
@@ -29,7 +33,7 @@ export class Formula extends ExcelComponent {
   storeChanged(changes) {
     let text = ''
     if (Object.keys(changes)[0] === 'cellData') {
-      const selId = this.store.getState().selectedId
+      const selId = this.$state().selectedId
       text = changes.cellData[selId].formula
     } else if (Object.keys(changes)[0] === 'selectedId') {
       try {

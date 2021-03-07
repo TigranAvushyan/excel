@@ -1,6 +1,7 @@
 import {storage} from '@core/utils'
 
 const defaultState = {
+  lastDate: '',
   tableName: 'My Table',
   tableResize: {
     col: {},
@@ -12,6 +13,9 @@ const defaultState = {
   },
 }
 
-export const initialState = storage('excel-state')
-  ? storage('excel-state')
-  : defaultState
+export const initialState = url => {
+  return storage(`excel/${url}`)
+      ? storage(`excel/${url}`)
+      : defaultState
+}
+
